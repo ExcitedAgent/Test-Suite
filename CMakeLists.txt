@@ -698,6 +698,16 @@ foreach(sparsity dense semi-sparse sparse)
     PASS_REGULAR_EXPRESSION "access size : \\[700, 700\\]")
 endforeach()
 
+foreach(sparsity dense semi-sparse sparse)
+  add_test(NAME ae_uncapped_allocation_extent/${sparsity}
+    COMMAND ae -overflow -ae-sparsity=${sparsity}
+      ${CMAKE_CURRENT_SOURCE_DIR}/test_cases_bc/ae_overflow_tests/uncapped_allocation_extent.c.bc
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+  set_tests_properties(ae_uncapped_allocation_extent/${sparsity} PROPERTIES
+    PASS_REGULAR_EXPRESSION "success: expected safe buffer access"
+    FAIL_REGULAR_EXPRESSION "failure:")
+endforeach()
+
 # ae no-main tests (ctest -R ae_no_main -VV)
 set(ae_no_main_dirs
   ae_assert_tests
