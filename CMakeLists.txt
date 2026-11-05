@@ -745,6 +745,15 @@ foreach(sparsity dense semi-sparse sparse)
     PASS_REGULAR_EXPRESSION "allocate size : \\[8, 8\\], access size : \\[11, 11\\]")
 endforeach()
 
+foreach(sparsity dense semi-sparse sparse)
+  add_test(NAME ae_concat_preserves_prefix/${sparsity}
+    COMMAND ae -overflow -ae-sparsity=${sparsity}
+      ${CMAKE_CURRENT_SOURCE_DIR}/test_cases_bc/ae_overflow_tests/concat_preserves_prefix.c.bc
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+  set_tests_properties(ae_concat_preserves_prefix/${sparsity} PROPERTIES
+    FAIL_REGULAR_EXPRESSION "Assertion failure|has not been checked|allocate size :")
+endforeach()
+
 # ae no-main tests (ctest -R ae_no_main -VV)
 set(ae_no_main_dirs
   ae_assert_tests
