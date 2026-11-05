@@ -689,6 +689,15 @@ foreach(sparsity dense semi-sparse sparse)
     PASS_REGULAR_EXPRESSION "allocate size : \\[0, \\+oo\\], access size : \\[-oo, \\+oo\\]")
 endforeach()
 
+foreach(sparsity dense semi-sparse sparse)
+  add_test(NAME ae_checked_large_offset/${sparsity}
+    COMMAND ae -overflow -ae-sparsity=${sparsity}
+      ${CMAKE_CURRENT_SOURCE_DIR}/test_cases_bc/ae_overflow_tests/checked_large_offset.c.bc
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+  set_tests_properties(ae_checked_large_offset/${sparsity} PROPERTIES
+    PASS_REGULAR_EXPRESSION "access size : \\[700, 700\\]")
+endforeach()
+
 # ae no-main tests (ctest -R ae_no_main -VV)
 set(ae_no_main_dirs
   ae_assert_tests
