@@ -549,6 +549,18 @@ foreach(file ${diff_tests_cruxbc_big})
   )
 endforeach()
 
+# Special-address GEP regression: successful exit alone is insufficient; the
+# unknown-only alarm must survive rather than being silently dropped.
+foreach(sparsity dense semi-sparse sparse)
+  add_test(
+    NAME ae_special_target_gep/${sparsity}
+    COMMAND ae -overflow -ae-sparsity=${sparsity}
+      ${CMAKE_CURRENT_SOURCE_DIR}/test_cases_bc/ae_overflow_tests/special_target_gep.c.bc
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+  set_tests_properties(ae_special_target_gep/${sparsity} PROPERTIES
+    PASS_REGULAR_EXPRESSION "allocate size : \\[0, \\+oo\\], access size : \\[-oo, \\+oo\\]")
+endforeach()
+
 # ae_assert tests (ctest -R ae_assert_test -VV) + semi/full-sparse
 file(GLOB ae_assert_files RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/test_cases_bc/ae_assert_tests/*.bc")
 list(FILTER ae_assert_files EXCLUDE REGEX "no-main")
