@@ -549,7 +549,7 @@ foreach(file ${diff_tests_cruxbc_big})
   )
 endforeach()
 
-# Special-address GEP regression: successful exit alone is insufficient; the
+# Unknown-size GEP target regression: successful exit alone is insufficient; the
 # unknown-only alarm must survive rather than being silently dropped.
 foreach(sparsity dense semi-sparse sparse)
   add_test(
@@ -558,7 +558,7 @@ foreach(sparsity dense semi-sparse sparse)
       ${CMAKE_CURRENT_SOURCE_DIR}/test_cases_bc/ae_overflow_tests/special_target_gep.c.bc
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
   set_tests_properties(ae_special_target_gep/${sparsity} PROPERTIES
-    PASS_REGULAR_EXPRESSION "allocate size : \\[0, \\+oo\\], access size : \\[-oo, \\+oo\\]")
+    PASS_REGULAR_EXPRESSION "allocate size : \\[0, \\+oo\\], access size : \\[4, 4\\]")
 endforeach()
 
 # ae_assert tests (ctest -R ae_assert_test -VV) + semi/full-sparse
